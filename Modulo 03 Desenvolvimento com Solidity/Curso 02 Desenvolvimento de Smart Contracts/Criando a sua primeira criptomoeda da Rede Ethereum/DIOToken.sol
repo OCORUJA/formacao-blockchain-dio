@@ -2,7 +2,7 @@ pragma solidity ^0.8.0;
 
 interface IERC20{
 
-    //getters
+    //getter
     function totalSupply() external view returns(uint256);
     function balanceOf(address account) external view returns (uint256);
     function allowance(address owner, address spender) external view returns (uint256);
@@ -16,6 +16,8 @@ interface IERC20{
     event Approval(address indexed owner, address indexed spender, uint256);
 
 }
+
+
 
 contract DIOToken is IERC20{
 
@@ -68,6 +70,11 @@ contract DIOToken is IERC20{
         balances[buyer] = balances[buyer]+numTokens;
         emit Transfer(owner, buyer, numTokens);
         return true;
+    }
+
+     modifier hasSufficientBalance(uint256 numTokens) {
+        require(numTokens <= balances[msg.sender], "Insufficient balance");
+        _;
     }
 
 }
